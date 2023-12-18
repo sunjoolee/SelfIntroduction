@@ -10,6 +10,7 @@
     <string name="exit">종료</string>
 
     <string name="sign_in_fail_warning">이름 또는 비밀번호가 틀렸습니다!</string>
+    <string name="sign_up_fail_warning">회원가입에 실패했습니다!</string>
 
     <string name="empty_name_warning">이름을 입력해주세요.</string>
     <string name="same_name_warning">이미 존재하는 이름입니다.</string>
@@ -21,7 +22,7 @@
     <string name="password_uppercase_information">대문자를 포함해주세요.</string>
     <string name="password_special_char_information">특수문자를 포함해주세요.</string>
 
-    <string name="password_check_different_warning">입력한 비밀번호와 같지 않습니다.</string>
+    <string name="password_different_warning">입력한 비밀번호와 같지 않습니다.</string>
 
     <string name="home_name">내 이름은 %s입니다.</string>
     <string name="home_email">내 이메일은 %s입니다.</string>
