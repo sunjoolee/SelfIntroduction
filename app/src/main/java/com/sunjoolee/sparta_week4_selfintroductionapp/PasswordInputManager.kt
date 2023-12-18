@@ -1,15 +1,15 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp.managers
+package com.sunjoolee.sparta_week4_selfintroductionapp
 
 class PasswordInputManager private constructor(){
     companion object{
-        private var instance:PasswordInputManager? = null
-        fun getInstance():PasswordInputManager{
+        private var instance: PasswordInputManager? = null
+        fun getInstance(): PasswordInputManager {
             if(instance == null) instance = PasswordInputManager()
             return instance!!
         }
     }
 
-    fun isValid(password:String):PasswordCode{
+    fun isValid(password:String): PasswordCode {
         //(1) 10자리 이상인지 확인
         if(password.length < 10) return PasswordCode.NOT_ENOUGH_CHAR
 

@@ -1,8 +1,8 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp
+package com.sunjoolee.sparta_week4_selfintroductionapp.extentions
 
 import android.widget.EditText
-import com.sunjoolee.sparta_week4_selfintroductionapp.managers.PasswordCode
-import com.sunjoolee.sparta_week4_selfintroductionapp.managers.PasswordInputManager
+import com.sunjoolee.sparta_week4_selfintroductionapp.PasswordCode
+import com.sunjoolee.sparta_week4_selfintroductionapp.PasswordInputManager
 
 //EditText 확장 함수
 fun EditText.isTextNull(): Boolean = text.isNullOrBlank()

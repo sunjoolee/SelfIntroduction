@@ -1,17 +1,11 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp
+package com.sunjoolee.sparta_week4_selfintroductionapp.sign_up
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
+import com.sunjoolee.sparta_week4_selfintroductionapp.R
 
 class SignUpActivity : AppCompatActivity() {
     private val TAG = "SignUpActivity"

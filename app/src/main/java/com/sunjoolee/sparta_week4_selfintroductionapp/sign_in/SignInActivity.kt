@@ -1,4 +1,4 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp
+package com.sunjoolee.sparta_week4_selfintroductionapp.sign_in
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +11,14 @@ import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
-import com.sunjoolee.sparta_week4_selfintroductionapp.managers.LoginManager
-import com.sunjoolee.sparta_week4_selfintroductionapp.managers.PasswordCode
-import com.sunjoolee.sparta_week4_selfintroductionapp.managers.PasswordInputManager
+import com.sunjoolee.sparta_week4_selfintroductionapp.home.HomeActivity
+import com.sunjoolee.sparta_week4_selfintroductionapp.R
+import com.sunjoolee.sparta_week4_selfintroductionapp.sign_up.SignUpActivity
+import com.sunjoolee.sparta_week4_selfintroductionapp.extentions.isTextNull
+import com.sunjoolee.sparta_week4_selfintroductionapp.extentions.setInvisible
+import com.sunjoolee.sparta_week4_selfintroductionapp.extentions.setVisible
+import com.sunjoolee.sparta_week4_selfintroductionapp.text_watchers.NameTextWatcher
+import com.sunjoolee.sparta_week4_selfintroductionapp.text_watchers.PasswordTextWatcher
 
 class SignInActivity : AppCompatActivity() {
     private val TAG = "SignInActivity"
@@ -33,34 +37,14 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        nameEditText.addTextChangedListener(nameTextWatcher)
-        passwordEditText.addTextChangedListener(passwordTextWatcher)
+        nameEditText.addTextChangedListener(NameTextWatcher(nameWarningTextView))
+        passwordEditText.addTextChangedListener(PasswordTextWatcher(passwordWarningTextView))
 
         signInButton.setOnClickListener(signInOnClickListener)
         signUpButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private val nameTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            Log.d(TAG, "nameEditText onTextChanged) ${nameEditText.text}")
-            if (nameEditText.isTextNull()) nameWarningTextView.setVisible()
-            else nameWarningTextView.setInvisible()
-        }
-        override fun afterTextChanged(p0: Editable?) = Unit
-    }
-
-    private val passwordTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            Log.d(TAG, "passwordEditText onTextChanged) ${passwordEditText.text}")
-            if (passwordEditText.isTextNull()) passwordWarningTextView.setVisible()
-            else passwordWarningTextView.setInvisible()
-        }
-        override fun afterTextChanged(p0: Editable?) = Unit
     }
 
     private val signInOnClickListener = object: OnClickListener{
@@ -84,7 +68,7 @@ class SignInActivity : AppCompatActivity() {
 
             val name = nameEditText.text.toString()
             val password = passwordEditText.text.toString()
-            if (LoginManager.getInstance().signIn(name, password)) {
+            if (SignInManager.getInstance().signIn(name, password)) {
                 Log.d(TAG, "sign in button) sign in success")
                 signInWarningTextView.setInvisible()
 

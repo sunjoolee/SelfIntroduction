@@ -1,4 +1,4 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp
+package com.sunjoolee.sparta_week4_selfintroductionapp.extentions
 
 import android.view.View
 import android.widget.TextView

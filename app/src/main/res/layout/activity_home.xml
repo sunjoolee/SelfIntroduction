@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="32dp"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".home.HomeActivity">
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -23,12 +23,14 @@
             android:src="@drawable/chick2" />
 
         <TextView
+            android:id="@+id/tv_home_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/home_name"
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tv_home_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/home_email"

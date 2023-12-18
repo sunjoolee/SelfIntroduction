@@ -1,4 +1,4 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp.managers
+package com.sunjoolee.sparta_week4_selfintroductionapp
 
 enum class PasswordCode(val code:Int){
     VALID(1),

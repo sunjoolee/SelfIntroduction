@@ -1,13 +1,15 @@
-package com.sunjoolee.sparta_week4_selfintroductionapp.managers
+package com.sunjoolee.sparta_week4_selfintroductionapp.sign_in
 
-class LoginManager private constructor() {
+import com.sunjoolee.sparta_week4_selfintroductionapp.UserInfo
+
+class SignInManager private constructor() {
     private var userInfoArray = arrayOf<UserInfo>()
 
     companion object{
-        private var instance:LoginManager? = null
+        private var instance:SignInManager? = null
 
-        fun getInstance():LoginManager{
-            if(instance == null) instance = LoginManager()
+        fun getInstance():SignInManager{
+            if(instance == null) instance = SignInManager()
             return instance!!
         }
     }
@@ -31,5 +33,12 @@ class LoginManager private constructor() {
         }
         //로그인 실패
         return false
+    }
+
+    fun findUserEmail(name: String, password: String): Any {
+        for(user in userInfoArray) {
+            if((user.name == name) && (user.password == password)) return user.email
+        }
+        return ""
     }
 }
