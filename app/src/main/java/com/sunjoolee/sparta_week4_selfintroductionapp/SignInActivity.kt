@@ -16,23 +16,6 @@ import com.sunjoolee.sparta_week4_selfintroductionapp.managers.LoginManager
 import com.sunjoolee.sparta_week4_selfintroductionapp.managers.PasswordCode
 import com.sunjoolee.sparta_week4_selfintroductionapp.managers.PasswordInputManager
 
-//EditText 확장 함수
-fun EditText.isTextNull(): Boolean = text.isNullOrBlank()
-fun EditText.isNameValid(): Boolean = true
-fun EditText.isEmailValid(): Boolean = true
-fun EditText.isPasswordValid(): PasswordCode {
-    return PasswordInputManager.getInstance().isValid(text.toString())
-}
-
-//TextView 확장 함수
-fun TextView.setVisible() {
-    visibility = View.VISIBLE
-}
-
-fun TextView.setInvisible() {
-    visibility = View.INVISIBLE
-}
-
 class SignInActivity : AppCompatActivity() {
     private val TAG = "SignInActivity"
 
