@@ -2,11 +2,10 @@ package com.sunjoolee.sparta_week4_selfintroductionapp.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.sunjoolee.sparta_week4_selfintroductionapp.R
-import com.sunjoolee.sparta_week4_selfintroductionapp.sign_in.SignInManager
+import com.sunjoolee.sparta_week4_selfintroductionapp.user_info.UserInfoManager
 
 class HomeActivity : AppCompatActivity() {
 
@@ -23,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
 
         val name = intent.getStringExtra("name")!!
         val password = intent.getStringExtra("password")!!
-        val email = SignInManager.getInstance().findUserEmail(name, password)
+        val email = UserInfoManager.getInstance().findUserEmail(name, password)
 
         nameTextView.text = resources.getString(R.string.home_name, name)
         emailTextView.text = resources.getString(R.string.home_email, email)

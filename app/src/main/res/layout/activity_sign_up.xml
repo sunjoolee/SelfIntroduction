@@ -27,7 +27,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etv_name"
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -49,7 +49,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etv_email"
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -71,7 +71,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etv_password"
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -93,7 +93,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etv_password_check"
+            android:id="@+id/et_password_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -108,6 +108,7 @@
             android:visibility="invisible"
             tools:visibility="visible" />
     </LinearLayout>
+
 
     <Button
         app:layout_constraintBottom_toBottomOf="parent"

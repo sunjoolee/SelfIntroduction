@@ -12,9 +12,11 @@
     <string name="sign_in_fail_warning">이름 또는 비밀번호가 틀렸습니다!</string>
 
     <string name="empty_name_warning">이름을 입력해주세요.</string>
-    <string name="empty_email_warning">이메일을 입력해주세요.</string>
-    <string name="empty_password_warning">비밀번호를 입력해주세요.</string>
+    <string name="same_name_warning">이미 존재하는 이름입니다.</string>
 
+    <string name="empty_email_warning">이메일을 입력해주세요.</string>
+
+    <string name="empty_password_warning">비밀번호를 입력해주세요.</string>
     <string name="password_length_information">10자리 이상 입력해주세요.</string>
     <string name="password_uppercase_information">대문자를 포함해주세요.</string>
     <string name="password_special_char_information">특수문자를 포함해주세요.</string>
