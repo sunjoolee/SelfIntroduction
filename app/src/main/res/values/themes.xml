@@ -5,5 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Sparta_Week4_SelfIntroductionApp" parent="Base.Theme.Sparta_Week4_SelfIntroductionApp" />
+    <style name="Theme.Sparta_Week4_SelfIntroductionApp" parent="Base.Theme.Sparta_Week4_SelfIntroductionApp">
+        <item name="android:fontFamily">@font/leeokseon</item>
+    </style>
 </resources>
