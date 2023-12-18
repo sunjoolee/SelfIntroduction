@@ -57,16 +57,16 @@ class SignUpActivity : AppCompatActivity() {
                 passwordCheckWarningTextView.apply{
                     text = resources.getString(R.string.empty_password_warning)
                     setVisible()
-                    isPasswordCheckValid = false
                 }
+                isPasswordCheckValid = false
             }
             //비밀번호와 일치하는지 확인
             else if(it.toString() != passwordEditText.text.toString()){
                 passwordCheckWarningTextView.apply{
                     text = resources.getString(R.string.password_different_warning)
                     setVisible()
-                    isPasswordCheckValid = false
                 }
+                isPasswordCheckValid = false
             }
             else{
                 passwordCheckWarningTextView.setInvisible()
