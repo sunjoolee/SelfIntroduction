@@ -16,6 +16,7 @@
     <string name="same_name_warning">이미 존재하는 이름입니다.</string>
 
     <string name="empty_email_warning">이메일을 입력해주세요.</string>
+    <string name="email_provider_hint">\@_____.com</string>
     <string-array name="email_providers_array">
         <item>\@naver.com</item>
         <item>\@gmail.com</item>

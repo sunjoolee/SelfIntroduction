@@ -31,6 +31,7 @@
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/empty_name_warning"
             android:inputType="text"
             android:singleLine="true" />
 
@@ -53,6 +54,7 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/empty_password_warning"
             android:inputType="textPassword"
             android:singleLine="true" />
 
