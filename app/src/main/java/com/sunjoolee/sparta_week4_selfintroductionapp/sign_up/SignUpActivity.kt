@@ -3,8 +3,12 @@ package com.sunjoolee.sparta_week4_selfintroductionapp.sign_up
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import com.sunjoolee.sparta_week4_selfintroductionapp.ActivityCode
@@ -23,6 +27,8 @@ class SignUpActivity : AppCompatActivity() {
     private val nameWarningTextView by lazy{ findViewById<TextView>(R.id.tv_name_warning)}
 
     private val emailEditText by lazy{ findViewById<EditText>(R.id.et_email)}
+    private val emailProviderEditText by lazy{findViewById<EditText>(R.id.et_email_provider)}
+    private val emailProviderSpinner by lazy{findViewById<Spinner>(R.id.spinner_email_provider)}
     private val emailWarningTextView by lazy{ findViewById<TextView>(R.id.tv_email_warning)}
 
     private val passwordEditText by lazy{ findViewById<EditText>(R.id.et_password)}
@@ -74,6 +80,30 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.email_providers_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            emailProviderSpinner.adapter = adapter
+        }
+
+        val emailProvider:String? = null
+        emailProviderSpinner.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d(TAG, "email provider spinner) onItemSelected")
+                if(position == emailProviderSpinner.adapter.count -1){
+                    emailProviderSpinner.visibility = View.GONE
+                    emailProviderEditText.visibility = View.VISIBLE
+                }
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                Log.d(TAG, "email provider spinner) onNothingSelected")
+            }
+        }
+
+
         signUpButton.setOnClickListener {
             //회원가입하기 위해 모든 입력 유효한지 확인
             if(isNameValid && isEmailValid && isPasswordValid && isPasswordCheckValid) {
@@ -82,8 +112,18 @@ class SignUpActivity : AppCompatActivity() {
 
                 //회원가입
                 val name = nameEditText.text.toString()
-                val email = emailEditText.text.toString()
                 val password = passwordEditText.text.toString()
+
+                var email = emailEditText.text.toString()
+                //email 서비스 제공자 붙이기
+                if(emailProviderSpinner.visibility == View.VISIBLE){
+                    //Spinner로 선택한 경우
+                    email += emailProviderSpinner.selectedItem.toString()
+                }
+                else {
+                    //직접 입력한 경우
+                    email += emailProviderEditText.text?.toString() ?: ""
+                }
 
                 val userInfoManager = UserInfoManager.getInstance()
                 userInfoManager.signUp(name, email, password)

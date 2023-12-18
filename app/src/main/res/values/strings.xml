@@ -16,6 +16,11 @@
     <string name="same_name_warning">이미 존재하는 이름입니다.</string>
 
     <string name="empty_email_warning">이메일을 입력해주세요.</string>
+    <string-array name="email_providers_array">
+        <item>\@naver.com</item>
+        <item>\@gmail.com</item>
+        <item>직접 입력</item>
+    </string-array>
 
     <string name="empty_password_warning">비밀번호를 입력해주세요.</string>
     <string name="password_length_information">10자리 이상 입력해주세요.</string>
