@@ -7,85 +7,102 @@
     android:layout_margin="32dp"
     android:orientation="vertical"
     tools:context=".SignUpActivity">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="이름"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/etv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        />
+        android:inputType="text"
+        android:singleLine="true" />
+
     <TextView
         android:id="@+id/tv_name_warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이름 경고 메세지."
-        android:textColor="#E91E63"/>
+        android:text= "@string/empty_name_warning"
+        android:textColor="@color/warning_color"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="이메일"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/etv_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        />
+        android:inputType="textEmailAddress"
+        android:singleLine="true" />
+
     <TextView
         android:id="@+id/tv_email_warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이메일 경고 메세지."
-        android:textColor="#E91E63"/>
+        android:text= "@string/empty_email_warning"
+        android:textColor="@color/warning_color"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="비밀번호"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/etv_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        />
+        android:inputType="textPassword"
+        android:singleLine="true" />
+
     <TextView
         android:id="@+id/tv_password_warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="비밀번호 경고 메세지."
-        android:textColor="#E91E63"/>
+        android:text= "@string/empty_password_warning"
+        android:textColor="@color/warning_color"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="비밀번호 확인"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/etv_password_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        />
+        android:inputType="textPassword"
+        android:singleLine="true" />
+
     <TextView
         android:id="@+id/tv_password_check_warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="비밀번호 확인 경고 메세지."
-        android:textColor="#E91E63"/>
+        android:text= "@string/empty_password_warning"
+        android:textColor="@color/warning_color"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
     <Button
-        android:layout_marginTop="16dp"
+        android:id="@+id/btn_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="회원가입"
-        />
+        android:layout_marginTop="16dp"
+        android:text="회원가입" />
 
 
 </LinearLayout>
