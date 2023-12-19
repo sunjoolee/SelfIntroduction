@@ -44,9 +44,8 @@ class SignUpActivity : AppCompatActivity() {
         var isNameValid = false
         var isEmailValid = false
         var isPasswordValid = false
-        var isPasswordCheckValid = false
     }
-
+    private var isPasswordCheckValid = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)

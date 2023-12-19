@@ -36,8 +36,7 @@ class UserInfoManager private constructor() {
         return false
     }
 
-    fun signUp(name:String, email:String, password: String):Boolean{
+    fun signUp(name:String, email:String, password: String){
         userInfoArray += UserInfo(name, email, password)
-        return true
     }
 }

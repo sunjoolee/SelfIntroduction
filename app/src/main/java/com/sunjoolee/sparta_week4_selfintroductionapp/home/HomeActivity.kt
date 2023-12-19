@@ -8,7 +8,6 @@ import com.sunjoolee.sparta_week4_selfintroductionapp.R
 import com.sunjoolee.sparta_week4_selfintroductionapp.user_info.UserInfoManager
 
 class HomeActivity : AppCompatActivity() {
-
     private val TAG = "HomeActivity"
 
     private val nameTextView:TextView by lazy{findViewById(R.id.tv_home_name)}

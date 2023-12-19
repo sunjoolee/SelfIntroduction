@@ -3,12 +3,15 @@ package com.sunjoolee.sparta_week4_selfintroductionapp.sign_in
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import com.sunjoolee.sparta_week4_selfintroductionapp.ActivityCode
 import com.sunjoolee.sparta_week4_selfintroductionapp.home.HomeActivity
 import com.sunjoolee.sparta_week4_selfintroductionapp.R
