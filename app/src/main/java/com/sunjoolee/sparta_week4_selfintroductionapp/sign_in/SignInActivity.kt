@@ -1,5 +1,7 @@
 package com.sunjoolee.sparta_week4_selfintroductionapp.sign_in
 
+import android.app.Activity
+import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import com.sunjoolee.sparta_week4_selfintroductionapp.ActivityCode
 import com.sunjoolee.sparta_week4_selfintroductionapp.home.HomeActivity
@@ -35,32 +38,56 @@ class SignInActivity : AppCompatActivity() {
     private val signInButton by lazy { findViewById<Button>(R.id.btn_sign_in) }
     private val signUpButton by lazy { findViewById<Button>(R.id.btn_sign_up) }
 
-    companion object{
+    companion object {
         var isNameValid = false
         var isPasswordValid = false
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
+
         nameEditText.addTextChangedListener(
-            NameTextWatcher(nameWarningTextView, ActivityCode.SIGN_IN))
+            NameTextWatcher(nameWarningTextView, ActivityCode.SIGN_IN)
+        )
         passwordEditText.addTextChangedListener(
-            PasswordTextWatcher(passwordWarningTextView, ActivityCode.SIGN_IN))
+            PasswordTextWatcher(passwordWarningTextView, ActivityCode.SIGN_IN)
+        )
 
         signInButton.setOnClickListener(signInOnClickListener)
+
+        val startForResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.d(TAG, "startForResultLauncher) RESULT_OK")
+                val intent = result.data
+
+                intent?.let {
+                    val signUpName = it.getStringExtra("signUpName") ?: " "
+                    val signUpPassword = it.getStringExtra("signUpPassword") ?: " "
+                    Log.d(TAG, "startForResultLauncher) $signUpName $signUpPassword")
+
+                    nameEditText.setText(signUpName)
+                    passwordEditText.setText(signUpPassword)
+                }
+            }
+        }
+
         signUpButton.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(applicationContext, SignUpActivity::class.java)
+            startForResultLauncher.launch(intent)
         }
     }
 
-    private val signInOnClickListener = object: OnClickListener{
+    private val signInOnClickListener = object : OnClickListener {
         override fun onClick(p0: View?) {
             //로그인 하기 위해 모든 입력 유효한지 확인
             if (!isNameValid) {
                 Log.d(TAG, "sign in button) name is empty")
-                signInWarningTextView.apply{
+                signInWarningTextView.apply {
                     text = resources.getText(R.string.empty_name_warning)
                     setVisible()
                 }
@@ -68,7 +95,7 @@ class SignInActivity : AppCompatActivity() {
             }
             if (!isPasswordValid) {
                 Log.d(TAG, "sign in button) password is empty")
-                signInWarningTextView.apply{
+                signInWarningTextView.apply {
                     text = resources.getText(R.string.empty_password_warning)
                     setVisible()
                 }
@@ -82,13 +109,12 @@ class SignInActivity : AppCompatActivity() {
                 Log.d(TAG, "sign in button) sign in success")
                 signInWarningTextView.setInvisible()
 
-                val intent = Intent(applicationContext, HomeActivity::class.java)
                 intent.putExtra("name", name)
                 intent.putExtra("password", password)
                 startActivity(intent)
             } else {
                 Log.d(TAG, "sign in button) sign in fail")
-                signInWarningTextView.apply{
+                signInWarningTextView.apply {
                     text = resources.getText(R.string.sign_in_fail_warning)
                     setVisible()
                 }
