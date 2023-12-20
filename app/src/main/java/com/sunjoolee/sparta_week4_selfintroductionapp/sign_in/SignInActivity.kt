@@ -109,6 +109,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.d(TAG, "sign in button) sign in success")
                 signInWarningTextView.setInvisible()
 
+                val intent = Intent(applicationContext, HomeActivity::class.java)
                 intent.putExtra("name", name)
                 intent.putExtra("password", password)
                 startActivity(intent)
