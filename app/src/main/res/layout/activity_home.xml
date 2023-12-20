@@ -21,7 +21,18 @@
             android:layout_height="160dp"
             android:layout_gravity="center"
             android:layout_margin="16dp"
-            android:src="@drawable/chick2" />
+            android:scaleType="centerInside"
+            android:src="@drawable/chick2"/>
+        <Button
+            android:id="@+id/btn_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_image"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/light_blue"
+            android:layout_marginBottom="32dp"
+            />
 
         <TextView
             android:id="@+id/tv_home_name"
