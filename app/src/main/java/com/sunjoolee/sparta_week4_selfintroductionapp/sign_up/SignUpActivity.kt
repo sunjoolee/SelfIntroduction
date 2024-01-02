@@ -15,14 +15,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.sunjoolee.sparta_week4_selfintroductionapp.ActivityCode
 import com.sunjoolee.sparta_week4_selfintroductionapp.R
-import com.sunjoolee.sparta_week4_selfintroductionapp.extentions.setInvisible
-import com.sunjoolee.sparta_week4_selfintroductionapp.extentions.setVisible
-import com.sunjoolee.sparta_week4_selfintroductionapp.text_watchers.EmailTextWatcher
-import com.sunjoolee.sparta_week4_selfintroductionapp.text_watchers.NameTextWatcher
-import com.sunjoolee.sparta_week4_selfintroductionapp.text_watchers.PasswordTextWatcher
 import com.sunjoolee.sparta_week4_selfintroductionapp.user_info.UserInfoManager
 
 class SignUpActivity : AppCompatActivity() {
@@ -45,28 +40,134 @@ class SignUpActivity : AppCompatActivity() {
     private val signUpWarningTextView by lazy { findViewById<TextView>(R.id.tv_sign_up_warning) }
     private val signUpButton by lazy { findViewById<Button>(R.id.btn_sign_up) }
 
-    companion object {
-        var isNameValid = false
-        var isEmailValid = false
-        var isPasswordValid = false
-    }
+    private val userInfoManager = UserInfoManager.getInstance()
 
+    private var isNameValid = false
+    private var isEmailValid = false
+    private var isPasswordValid = false
     private var isPasswordCheckValid = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        nameEditText.addTextChangedListener(
-            NameTextWatcher(nameWarningTextView, ActivityCode.SIGN_UP)
-        )
-        emailEditText.addTextChangedListener(
-            EmailTextWatcher(emailWarningTextView)
-        )
-        passwordEditText.addTextChangedListener(
-            PasswordTextWatcher(passwordWarningTextView, ActivityCode.SIGN_UP)
-        )
-        passwordCheckEditText.addTextChangedListener(passwordCheckTextWatcher)
+        initNameEditText()
+        initEmailEditText()
+        initPasswordEditText()
+        initPasswordCheckEditText()
 
+        initEmailProviderSpinner()
+
+        initSignUpButton()
+    }
+
+    private fun initNameEditText() {
+        nameEditText.addTextChangedListener { text ->
+            nameWarningTextView.run {
+                //(1) 이름이 비어있는지 확인
+                if (text.isNullOrBlank()) {
+                    setText(R.string.empty_name_warning)
+                    isVisible = true
+                    isNameValid = false
+                }
+                //(2) 이미 존재하는 이름인지 확인
+                else if (userInfoManager.findSameName(text.toString())) {
+                    setText(R.string.same_name_warning)
+                    isVisible = true
+                    isNameValid = false
+                } else {
+                    isVisible = false
+                    isNameValid = true
+                }
+            }
+        }
+    }
+
+    private fun initEmailEditText() {
+        emailEditText.addTextChangedListener { text ->
+            emailWarningTextView.isVisible = text.isNullOrBlank()
+            isEmailValid = !text.isNullOrBlank()
+        }
+    }
+
+    private fun initPasswordEditText() {
+        passwordEditText.addTextChangedListener { text ->
+            //(1) 비어있는지 확인
+            passwordWarningTextView.apply {
+                if (text.isNullOrBlank()) {
+                    setText(R.string.empty_password_warning)
+                    setTextColor(resources.getColor(R.color.warning_color))
+                    isVisible = true
+                    isPasswordValid = false
+                }
+                //(2) 10자리 이상인지 확인
+                else if (text.length < 10) {
+                    setText(R.string.password_length_information)
+                    setTextColor(resources.getColor(R.color.information_color))
+                    isVisible = true
+                    isPasswordValid = false
+
+                }
+                //(3) 대문자 포함하는지 확인
+                else if (!containsUppercase(text.toString())) {
+                    setText(R.string.password_uppercase_information)
+                    setTextColor(resources.getColor(R.color.information_color))
+                    isVisible = true
+                    isPasswordValid = false
+                }
+                //(4) 특수문자 포함하는지 확인
+                else if (!containsSpecialChar(text.toString())) {
+                    setText(R.string.password_special_char_information)
+                    setTextColor(resources.getColor(R.color.information_color))
+                    isVisible = true
+                    isPasswordValid = false
+                } else {
+                    isVisible = false
+                    isPasswordValid = true
+                }
+            }
+        }
+    }
+
+    private fun containsUppercase(password: String): Boolean {
+        for (ch in password) {
+            if (('A'.code <= ch.code) && (ch.code <= 'Z'.code)) return true
+        }
+        return false
+    }
+
+    private fun containsSpecialChar(password: String): Boolean {
+        val possibleSpecialChars =
+            listOf('!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=')
+        for (ch in password) {
+            if (possibleSpecialChars.contains(ch)) return true
+        }
+        return false
+    }
+
+    private fun initPasswordCheckEditText() {
+        passwordCheckEditText.addTextChangedListener { text ->
+            passwordCheckWarningTextView.apply {
+                //비어있는지 확인
+                if (text.isNullOrBlank()) {
+                    setText(R.string.empty_password_warning)
+                    isVisible = true
+                    isPasswordCheckValid = false
+                }
+                //비밀번호와 일치하는지 확인
+                else if (text.toString() != passwordEditText.text.toString()) {
+                    setText(R.string.password_different_warning)
+                    isVisible = true
+                    isPasswordCheckValid = false
+                } else {
+                    isVisible = false
+                    isPasswordCheckValid = true
+                }
+            }
+        }
+    }
+
+    private fun initEmailProviderSpinner(){
         ArrayAdapter.createFromResource(
             this,
             R.array.email_providers_array,
@@ -76,35 +177,6 @@ class SignUpActivity : AppCompatActivity() {
             emailProviderSpinner.adapter = adapter
         }
         emailProviderSpinner.onItemSelectedListener = spinnerOnItemSelectListener
-
-        signUpButton.setOnClickListener(signUpOnClickListner)
-    }
-
-    private val passwordCheckTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            //비어있는지 확인
-            if (p0.isNullOrBlank()) {
-                passwordCheckWarningTextView.apply {
-                    text = resources.getString(R.string.empty_password_warning)
-                    setVisible()
-                }
-                isPasswordCheckValid = false
-            }
-            //비밀번호와 일치하는지 확인
-            else if (p0.toString() != passwordEditText.text.toString()) {
-                passwordCheckWarningTextView.apply {
-                    text = resources.getString(R.string.password_different_warning)
-                    setVisible()
-                }
-                isPasswordCheckValid = false
-            } else {
-                passwordCheckWarningTextView.setInvisible()
-                isPasswordCheckValid = true
-            }
-        }
-
-        override fun afterTextChanged(p0: Editable?) = Unit
     }
 
     private val spinnerOnItemSelectListener = object : AdapterView.OnItemSelectedListener {
@@ -115,42 +187,40 @@ class SignUpActivity : AppCompatActivity() {
                 emailProviderEditText.visibility = View.VISIBLE
             }
         }
-
         override fun onNothingSelected(p0: AdapterView<*>?) {
             Log.d(TAG, "email provider spinner) onNothingSelected")
         }
     }
 
-    private val signUpOnClickListner = object : OnClickListener {
-        override fun onClick(p0: View?) {
-            //회원가입하기 위해 모든 입력 유효한지 확인
-            if (isNameValid && isEmailValid && isPasswordValid && isPasswordCheckValid) {
-                Log.d(TAG, "sign up button) sign up success")
-                signUpWarningTextView.setInvisible()
+    private fun initSignUpButton(){
+     signUpButton.setOnClickListener {
+         //회원가입하기 위해 모든 입력 유효한지 확인
+         if (isNameValid && isEmailValid && isPasswordValid && isPasswordCheckValid) {
+             Log.d(TAG, "sign up button) sign up success")
+             signUpWarningTextView.isVisible = false
 
-                //회원가입
-                val name = nameEditText.text.toString()
-                val password = passwordEditText.text.toString()
-                var email = emailEditText.text.toString()
-                //email 서비스 제공자 붙이기
-                email += if (emailProviderSpinner.visibility == View.VISIBLE) {
-                            emailProviderSpinner.selectedItem.toString()
-                        } else {
-                            emailProviderEditText.text?.toString() ?: ""
-                        }
+             //회원가입
+             val name = nameEditText.text.toString()
+             val password = passwordEditText.text.toString()
+             var email = emailEditText.text.toString()
+             //email 서비스 제공자 붙이기
+             email += if (emailProviderSpinner.visibility == View.VISIBLE) {
+                 emailProviderSpinner.selectedItem.toString()
+             } else {
+                 emailProviderEditText.text?.toString() ?: ""
+             }
 
-                val userInfoManager = UserInfoManager.getInstance()
-                userInfoManager.signUp(name, email, password)
+             val userInfoManager = UserInfoManager.getInstance()
+             userInfoManager.signUp(name, email, password)
 
-                finishSignUpActivity(name, password)
-            } else {
-                Log.d(TAG, "sign up button) sign up fail")
-                signUpWarningTextView.setVisible()
-            }
-        }
+             finishSignUpActivity(name, password)
+         } else {
+             Log.d(TAG, "sign up button) sign up fail")
+             signUpWarningTextView.isVisible = true
+         } }
     }
 
-    private fun finishSignUpActivity(name:String, password:String){
+    private fun finishSignUpActivity(name: String, password: String) {
         val resultIntent = Intent()
         resultIntent.putExtra("signUpName", name)
         resultIntent.putExtra("signUpPassword", password)
