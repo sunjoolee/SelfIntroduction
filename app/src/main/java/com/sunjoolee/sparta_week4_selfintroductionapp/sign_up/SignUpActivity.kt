@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.sunjoolee.sparta_week4_selfintroductionapp.R
+import com.sunjoolee.sparta_week4_selfintroductionapp.sign_in.SignInActivity
 import com.sunjoolee.sparta_week4_selfintroductionapp.user_info.UserInfoManager
 
 class SignUpActivity : AppCompatActivity() {
@@ -221,10 +222,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun finishSignUpActivity(name: String, password: String) {
-        val resultIntent = Intent()
-        resultIntent.putExtra("signUpName", name)
-        resultIntent.putExtra("signUpPassword", password)
-        setResult(Activity.RESULT_OK, resultIntent)
+        setResult(Activity.RESULT_OK, SignInActivity.getResultIntent(name,password))
         finish()
     }
 }

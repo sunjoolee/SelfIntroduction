@@ -1,6 +1,7 @@
 package com.sunjoolee.sparta_week4_selfintroductionapp.sign_in
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,6 +22,17 @@ import com.sunjoolee.sparta_week4_selfintroductionapp.sign_up.SignUpActivity
 
 class SignInActivity : AppCompatActivity() {
     private val TAG = "SignInActivity"
+
+    companion object{
+        val EXTRA_SIGN_UP_NAME = "extra_sign_up_name"
+        val EXTRA_SIGN_UP_PASSWORD = "extra_sign_up_password"
+
+        fun getResultIntent(signUpName:String, signUpPassword:String) :Intent =
+        Intent().apply {
+            putExtra(EXTRA_SIGN_UP_NAME, signUpName)
+            putExtra(EXTRA_SIGN_UP_PASSWORD, signUpPassword)
+        }
+    }
 
     private val nameEditText by lazy { findViewById<EditText>(R.id.et_name) }
     private val passwordEditText by lazy { findViewById<EditText>(R.id.et_password) }
@@ -51,8 +63,8 @@ class SignInActivity : AppCompatActivity() {
                 val intent = result.data
 
                 intent?.let {
-                    val signUpName = it.getStringExtra("signUpName") ?: " "
-                    val signUpPassword = it.getStringExtra("signUpPassword") ?: " "
+                    val signUpName = it.getStringExtra(EXTRA_SIGN_UP_NAME) ?: " "
+                    val signUpPassword = it.getStringExtra(EXTRA_SIGN_UP_PASSWORD) ?: " "
                     Log.d(TAG, "startForResultLauncher) $signUpName $signUpPassword")
 
                     nameEditText.setText(signUpName)
@@ -128,11 +140,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.d(TAG, "sign in button) sign in success")
                 signInWarningTextView.isVisible = false
 
-                val intent = Intent(applicationContext, HomeActivity::class.java).apply {
-                    putExtra("name", name)
-                    putExtra("password", password)
-                }
-                startActivity(intent)
+                startActivity(HomeActivity.newIntent(this, name, password))
             } else {
                 //로그인 실패
                 Log.d(TAG, "sign in button) sign in fail")

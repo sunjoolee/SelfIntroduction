@@ -1,5 +1,7 @@
 package com.sunjoolee.sparta_week4_selfintroductionapp.home
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +18,18 @@ import kotlin.random.Random
 
 class HomeActivity : AppCompatActivity() {
     private val TAG = "HomeActivity"
+
+    companion object{
+        val EXTRA_NAME = "extra_name"
+        val EXTRA_PASSWORD = "extra_password"
+
+        fun newIntent(context: Context, name:String, password:String): Intent =
+            Intent(context, HomeActivity::class.java).apply {
+                putExtra(EXTRA_NAME, name)
+                putExtra(EXTRA_PASSWORD, password)
+            }
+    }
+
 
     private val homeImageView:ImageView by lazy{findViewById(R.id.iv_home)}
     private val imageButton:Button by lazy{findViewById(R.id.btn_image)}
@@ -56,8 +70,8 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        val name = intent.getStringExtra("name")!!
-        val password = intent.getStringExtra("password")!!
+        val name = intent.getStringExtra(EXTRA_NAME)!!
+        val password = intent.getStringExtra(EXTRA_PASSWORD)!!
         val email = UserInfoManager.getInstance().findUserEmail(name, password)
 
         nameTextView.text = resources.getString(R.string.home_name, name)
