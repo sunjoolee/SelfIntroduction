@@ -1,37 +1,34 @@
 package com.sunjoolee.sparta_week4_selfintroductionapp.sign_in
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.sunjoolee.sparta_week4_selfintroductionapp.home.HomeActivity
+import com.sunjoolee.sparta_week4_selfintroductionapp.ErrorMsg
 import com.sunjoolee.sparta_week4_selfintroductionapp.R
-import com.sunjoolee.sparta_week4_selfintroductionapp.user_info.UserInfoManager
+import com.sunjoolee.sparta_week4_selfintroductionapp.home.HomeActivity
 import com.sunjoolee.sparta_week4_selfintroductionapp.sign_up.SignUpActivity
+import com.sunjoolee.sparta_week4_selfintroductionapp.user_info.UserInfoManager
 
 class SignInActivity : AppCompatActivity() {
     private val TAG = "SignInActivity"
 
-    companion object{
+    companion object {
         val EXTRA_SIGN_UP_NAME = "extra_sign_up_name"
         val EXTRA_SIGN_UP_PASSWORD = "extra_sign_up_password"
 
-        fun getResultIntent(signUpName:String, signUpPassword:String) :Intent =
-        Intent().apply {
-            putExtra(EXTRA_SIGN_UP_NAME, signUpName)
-            putExtra(EXTRA_SIGN_UP_PASSWORD, signUpPassword)
-        }
+        fun getResultIntent(signUpName: String, signUpPassword: String): Intent =
+            Intent().apply {
+                putExtra(EXTRA_SIGN_UP_NAME, signUpName)
+                putExtra(EXTRA_SIGN_UP_PASSWORD, signUpPassword)
+            }
     }
 
     private val nameEditText by lazy { findViewById<EditText>(R.id.et_name) }
@@ -78,30 +75,21 @@ class SignInActivity : AppCompatActivity() {
 
     private fun initNameEditText() {
         nameEditText.addTextChangedListener { text ->
-            //로그인하는 경우, 이름이 비어있는지만 확인
-            nameWarningTextView.run {
-                if (text.isNullOrBlank()) {
-                    setText(R.string.empty_name_warning)
-                    isVisible = true
-                } else {
-                    isVisible = false
-                }
-            }
+            nameWarningTextView.setText(
+                if (text.isNullOrBlank()) ErrorMsg.NAME_EMPTY.message
+                else ErrorMsg.PASS.message
+            )
         }
     }
 
     private fun initPasswordEditText() {
         passwordEditText.addTextChangedListener { text ->
             //로그인하는 경우, 비밀번호 비어있는 지만 확인
-            passwordWarningTextView.run {
-                if (text.isNullOrBlank()) {
-                    setText(R.string.empty_password_warning)
-                    setTextColor(resources.getColor(R.color.warning_color))
-                    isVisible = true
-                } else {
-                    isVisible = false
-                }
-            }
+            passwordWarningTextView.setTextColor(resources.getColor(R.color.warning_color))
+            passwordWarningTextView.setText(
+                if (text.isNullOrBlank()) ErrorMsg.PWD_EMPTY.message
+                else ErrorMsg.PASS.message
+            )
         }
     }
 
@@ -116,42 +104,34 @@ class SignInActivity : AppCompatActivity() {
     private fun initSignInButton() {
         signInButton.setOnClickListener {
             //로그인 하기 위해 모든 입력 유효한지 확인
-            signInWarningTextView.run {
-                if (!isNameValid()) {
-                    Log.d(TAG, "sign in button) name is empty")
-                    text = resources.getText(R.string.empty_name_warning)
-                    isVisible = true
-                    return@setOnClickListener
-                }
-                if (!isPasswordValid()) {
-                    Log.d(TAG, "sign in button) password is empty")
-                    text = resources.getText(R.string.empty_password_warning)
-                    isVisible = true
-                    return@setOnClickListener
-                }
+            if (!isNameValid()) {
+                Log.d(TAG, "sign in button) name is empty")
+                signInWarningTextView.setText(ErrorMsg.NAME_EMPTY.message)
+                return@setOnClickListener
+            }
+            if (!isPasswordValid()) {
+                Log.d(TAG, "sign in button) password is empty")
+                signInWarningTextView.setText(ErrorMsg.PWD_EMPTY.message)
+                return@setOnClickListener
             }
 
-            //로그인 시도하기
+
             val name = nameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
             if (userInfoManager.signIn(name, password)) {
-                //로그인 성공
                 Log.d(TAG, "sign in button) sign in success")
-                signInWarningTextView.isVisible = false
-
+                signInWarningTextView.setText(ErrorMsg.PASS.message)
                 startActivity(HomeActivity.newIntent(this, name, password))
-            } else {
-                //로그인 실패
+            }
+            else {
                 Log.d(TAG, "sign in button) sign in fail")
-                signInWarningTextView.text = resources.getText(R.string.sign_in_fail_warning)
-                signInWarningTextView.isVisible = true
-
+                signInWarningTextView.setText(ErrorMsg.SIGN_IN_FAIL.message)
             }
         }
     }
 
-    private fun initSignUpButton(startForResultLauncher:ActivityResultLauncher<Intent>){
+    private fun initSignUpButton(startForResultLauncher: ActivityResultLauncher<Intent>) {
         signUpButton.setOnClickListener {
             val intent = Intent(applicationContext, SignUpActivity::class.java)
             startForResultLauncher.launch(intent)

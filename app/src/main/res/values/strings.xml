@@ -30,6 +30,8 @@
 
     <string name="password_different_warning">입력한 비밀번호와 같지 않습니다.</string>
 
+    <string name="no_message"></string>
+
     <string name="upload_image">이미지 업로드</string>
     <string name="delete_image">이미지 삭제</string>
 
