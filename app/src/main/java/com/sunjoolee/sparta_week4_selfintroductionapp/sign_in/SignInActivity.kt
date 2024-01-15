@@ -9,8 +9,10 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.observe
 import com.sunjoolee.sparta_week4_selfintroductionapp.ErrorMsg
 import com.sunjoolee.sparta_week4_selfintroductionapp.R
 import com.sunjoolee.sparta_week4_selfintroductionapp.home.HomeActivity
@@ -42,12 +44,16 @@ class SignInActivity : AppCompatActivity() {
     private val signUpButton by lazy { findViewById<Button>(R.id.btn_sign_up) }
 
     private val userInfoManager = UserInfoManager.getInstance()
+
+    private val model: SignInViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        initNameEditText()
-        initPasswordEditText()
+        initViewModel()
+
+        initNameEditTextWatcher()
+        initPasswordEditTextWatcher()
 
         initSignInButton()
 
@@ -73,64 +79,54 @@ class SignInActivity : AppCompatActivity() {
         initSignUpButton(startForResultLauncher)
     }
 
-    private fun initNameEditText() {
+    private fun initViewModel() {
+        with(model) {
+            isNameValid.observe(this@SignInActivity) { isNameValid ->
+                nameWarningTextView.setText(
+                    if (isNameValid) ErrorMsg.PASS.message
+                    else ErrorMsg.NAME_EMPTY.message
+                )
+            }
+
+            isPasswordValid.observe(this@SignInActivity) { isPasswordValid ->
+                passwordWarningTextView.setText(
+                    if (isPasswordValid) ErrorMsg.PWD_EMPTY.message
+                    else ErrorMsg.PASS.message
+                )
+            }
+
+            isSignInValid.observe(this@SignInActivity) { isSignInValid ->
+                signInWarningTextView.setText(
+                    when (isSignInValid) {
+                        SignInValidity.NAME_EMPTY -> ErrorMsg.NAME_EMPTY.message
+                        SignInValidity.PASSWORD_EMPTY -> ErrorMsg.PWD_EMPTY.message
+                        SignInValidity.SUCCESS -> ErrorMsg.PASS.message
+                        SignInValidity.FAIL -> ErrorMsg.SIGN_IN_FAIL.message
+                    }
+                )
+
+                if(isSignInValid == SignInValidity.SUCCESS)
+                    startActivity(HomeActivity.newIntent(this@SignInActivity, nameEditText.text.toString(), passwordEditText.text.toString()))
+            }
+        }
+    }
+
+    private fun initNameEditTextWatcher() {
         nameEditText.addTextChangedListener { text ->
-            nameWarningTextView.setText(
-                if (text.isNullOrBlank()) ErrorMsg.NAME_EMPTY.message
-                else ErrorMsg.PASS.message
-            )
+            model.checkIfNameValid(text)
         }
     }
-
-    private fun initPasswordEditText() {
+    private fun initPasswordEditTextWatcher() {
         passwordEditText.addTextChangedListener { text ->
-            //로그인하는 경우, 비밀번호 비어있는 지만 확인
-            passwordWarningTextView.setTextColor(resources.getColor(R.color.warning_color))
-            passwordWarningTextView.setText(
-                if (text.isNullOrBlank()) ErrorMsg.PWD_EMPTY.message
-                else ErrorMsg.PASS.message
-            )
+            model.checkIfPasswordValid(text)
         }
-    }
-
-    private fun isNameValid(): Boolean {
-        return !nameEditText.text.isNullOrBlank()
-    }
-
-    private fun isPasswordValid(): Boolean {
-        return !passwordEditText.text.isNullOrBlank()
     }
 
     private fun initSignInButton() {
         signInButton.setOnClickListener {
-            //로그인 하기 위해 모든 입력 유효한지 확인
-            if (!isNameValid()) {
-                Log.d(TAG, "sign in button) name is empty")
-                signInWarningTextView.setText(ErrorMsg.NAME_EMPTY.message)
-                return@setOnClickListener
-            }
-            if (!isPasswordValid()) {
-                Log.d(TAG, "sign in button) password is empty")
-                signInWarningTextView.setText(ErrorMsg.PWD_EMPTY.message)
-                return@setOnClickListener
-            }
-
-
-            val name = nameEditText.text.toString()
-            val password = passwordEditText.text.toString()
-
-            if (userInfoManager.signIn(name, password)) {
-                Log.d(TAG, "sign in button) sign in success")
-                signInWarningTextView.setText(ErrorMsg.PASS.message)
-                startActivity(HomeActivity.newIntent(this, name, password))
-            }
-            else {
-                Log.d(TAG, "sign in button) sign in fail")
-                signInWarningTextView.setText(ErrorMsg.SIGN_IN_FAIL.message)
-            }
+            model.checkIfSignInValid(nameEditText.text, passwordEditText.text)
         }
     }
-
     private fun initSignUpButton(startForResultLauncher: ActivityResultLauncher<Intent>) {
         signUpButton.setOnClickListener {
             val intent = Intent(applicationContext, SignUpActivity::class.java)

@@ -3,10 +3,13 @@ package com.sunjoolee.sparta_week4_selfintroductionapp
 import androidx.annotation.StringRes
 
 enum class ErrorMsg(@StringRes val message:Int) {
+    PASS(R.string.no_message),
+
+
     NAME_EMPTY(R.string.empty_name_warning),
     NAME_SAME(R.string.same_name_warning),
 
-    EMAIL_EMPTY(R.string.empty_name_warning),
+    EMAIL_EMPTY(R.string.empty_email_warning),
 
     PWD_EMPTY(R.string.empty_password_warning),
     PWD_LENGTH(R.string.password_length_information),
@@ -15,7 +18,6 @@ enum class ErrorMsg(@StringRes val message:Int) {
 
     PWD_CHECK_DIFF(R.string.password_different_warning),
 
-    PASS(R.string.no_message),
     SIGN_IN_FAIL(R.string.sign_in_fail_warning),
     SIGN_UP_FAIL(R.string.sign_up_fail_warning)
 }
